@@ -8,5 +8,11 @@ directory = ".open-next/assets"
 binding = "ASSETS"
 
 [vars]
-# Variabel environment harus disetel langsung di Dashboard Cloudflare Pages 
-# agar tidak terekspos di repository publik.
+NEXT_PUBLIC_SUPABASE_URL = "https://nmfsjcbhyriyzshcnwbm.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5tZnNqY2JoeXJpeXpzaGNud2JtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0MzI0MTAsImV4cCI6MjA5MzAwODQxMH0.zXr_yTPhlCefqrgpKz7ZeP0MkoLMBD16Ip6MBo4Dbi4"
+SUPABASE_SERVICE_ROLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5tZnNqY2JoeXJpeXpzaGNud2JtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NzQzMjQxMCwiZXhwIjoyMDkzMDA4NDEwfQ.2uareZYR03uvSjm6HNYyTyUGiXhw7GdTtkb1OfxKN54"
+ONESIGNAL_APP_ID = "5815ea6e-2b90-45a5-a2cb-aa9e0c547546"
+ONESIGNAL_REST_API_KEY = "os_v2_app_lak6u3rlsbc2liwlvkpayvdvi2amahqsavleu5egiyvw7wugc2tr7im2zdmp6mkbcypa6lwsryseguqu4cgwzpn22elzk665uqsrzpy"
+ADMIN_SECRET = "gohelpadmin2024"
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME = "dgsknbx1g"
+NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET = "ml_default"
