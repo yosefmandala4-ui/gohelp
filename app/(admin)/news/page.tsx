@@ -8,9 +8,9 @@ export const dynamic = 'force-dynamic';
 
 export default async function NewsPage() {
   await checkAdminAuth();
-  const supabase = createAdminClient();
   let news = [];
   try {
+    const supabase = createAdminClient();
     const { data, error } = await supabase
       .from('news')
       .select('*')

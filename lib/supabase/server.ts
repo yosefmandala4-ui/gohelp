@@ -2,9 +2,18 @@ import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
 export function createAdminClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  
+  if (!url || !key) {
+    console.error('CRITICAL: Supabase environment variables are missing!');
+    // Return a proxy or something that won't throw until used, 
+    // but better to let it fail inside try-catch.
+  }
+
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    url || '',
+    key || '',
     {
       cookies: {
         getAll() { return []; },
