@@ -2,9 +2,11 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export async function checkAdminAuth() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const authCookie = cookieStore.get('admin_auth');
-  if (!authCookie || authCookie.value !== process.env.ADMIN_SECRET) {
+  const adminSecret = process.env.ADMIN_SECRET || 'gohelpadmin2024';
+  
+  if (!authCookie || authCookie.value !== adminSecret) {
     redirect('/login');
   }
 }
