@@ -7,35 +7,47 @@ import DashboardChart from './DashboardChart';
 export const dynamic = 'force-dynamic';
 
 async function getStats() {
-  const supabase = createAdminClient();
+  try {
+    const supabase = createAdminClient();
 
-  const [usersRes, messagesRes, coinsRes, newUsersRes] = await Promise.all([
-    supabase.from('profiles').select('id', { count: 'exact', head: true }),
-    supabase.from('messages').select('id', { count: 'exact', head: true }),
-    supabase.from('profiles').select('coins').then(r => {
-      const total = (r.data || []).reduce((sum: number, u: any) => sum + (u.coins || 0), 0);
-      return { total };
-    }),
-    supabase.from('profiles').select('id', { count: 'exact', head: true })
-      .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()),
-  ]);
+    const [usersRes, messagesRes, coinsRes, newUsersRes] = await Promise.all([
+      supabase.from('profiles').select('id', { count: 'exact', head: true }),
+      supabase.from('messages').select('id', { count: 'exact', head: true }).catch(() => ({ count: 0 })),
+      supabase.from('profiles').select('coins').then(r => {
+        const total = (r.data || []).reduce((sum: number, u: any) => sum + (u.coins || 0), 0);
+        return { total };
+      }).catch(() => ({ total: 0 })),
+      supabase.from('profiles').select('id', { count: 'exact', head: true })
+        .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()).catch(() => ({ count: 0 })),
+    ]);
 
-  return {
-    totalUsers: usersRes.count ?? 0,
-    totalMessages: messagesRes.count ?? 0,
-    totalCoins: coinsRes.total ?? 0,
-    newUsers7d: newUsersRes.count ?? 0,
-  };
+    return {
+      totalUsers: usersRes.count ?? 0,
+      totalMessages: (messagesRes as any).count ?? 0,
+      totalCoins: coinsRes.total ?? 0,
+      newUsers7d: (newUsersRes as any).count ?? 0,
+    };
+  } catch (e) {
+    console.error('Dashboard Stats Error:', e);
+    return { totalUsers: 0, totalMessages: 0, totalCoins: 0, newUsers7d: 0 };
+  }
 }
 
 async function getRecentUsers() {
-  const supabase = createAdminClient();
-  const { data } = await supabase
-    .from('profiles')
-    .select('id, full_name, email, service_type, coins, created_at')
-    .order('created_at', { ascending: false })
-    .limit(5);
-  return data ?? [];
+  try {
+    const supabase = createAdminClient();
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('id, full_name, email, service_type, coins, created_at')
+      .order('created_at', { ascending: false })
+      .limit(5);
+    
+    if (error) throw error;
+    return data ?? [];
+  } catch (e) {
+    console.error('Dashboard Recent Users Error:', e);
+    return [];
+  }
 }
 
 export default async function DashboardPage() {
