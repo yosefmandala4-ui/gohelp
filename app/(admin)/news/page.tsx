@@ -7,10 +7,17 @@ export const dynamic = 'force-dynamic';
 
 export default async function NewsPage() {
   const supabase = createAdminClient();
-  const { data: news, error } = await supabase
-    .from('news')
-    .select('*')
-    .order('created_at', { ascending: false });
+  let news = [];
+  try {
+    const { data, error } = await supabase
+      .from('news')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    news = data || [];
+  } catch (e) {
+    console.error('News fetch error:', e);
+  }
 
   return (
     <div className="space-y-6">

@@ -7,18 +7,24 @@ import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 
 async function getUsers(search?: string) {
-  const supabase = createAdminClient();
-  let query = supabase
-    .from('profiles')
-    .select('id, full_name, email, phone, service_type, coins, is_active, created_at, location_lat, location_lng')
-    .order('created_at', { ascending: false });
+  try {
+    const supabase = createAdminClient();
+    let query = supabase
+      .from('profiles')
+      .select('id, full_name, email, phone, service_type, coins, is_active, created_at, location_lat, location_lng')
+      .order('created_at', { ascending: false });
 
-  if (search) {
-    query = query.or(`full_name.ilike.%${search}%,email.ilike.%${search}%,service_type.ilike.%${search}%`);
+    if (search) {
+      query = query.or(`full_name.ilike.%${search}%,email.ilike.%${search}%,service_type.ilike.%${search}%`);
+    }
+
+    const { data, error } = await query.limit(100);
+    if (error) throw error;
+    return data ?? [];
+  } catch (e) {
+    console.error('Users fetch error:', e);
+    return [];
   }
-
-  const { data } = await query.limit(100);
-  return data ?? [];
 }
 
 import { Users, Search, Mail, Phone, Shield, Calendar, MoreHorizontal } from 'lucide-react';

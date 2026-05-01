@@ -6,9 +6,15 @@ export const dynamic = 'force-dynamic';
 import { Newspaper, Image as ImageIcon, Trash2, ExternalLink } from 'lucide-react';
 
 async function getBanners() {
-  const supabase = createAdminClient();
-  const { data } = await supabase.from('banners').select('*').order('display_order');
-  return data ?? [];
+  try {
+    const supabase = createAdminClient();
+    const { data, error } = await supabase.from('banners').select('*').order('display_order');
+    if (error) throw error;
+    return data ?? [];
+  } catch (e) {
+    console.error('Banners fetch error:', e);
+    return [];
+  }
 }
 
 export default async function BannersPage() {

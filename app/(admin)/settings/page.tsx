@@ -5,11 +5,17 @@ import SettingsForm from './SettingsForm';
 export const dynamic = 'force-dynamic';
 
 async function getSettings() {
-  const supabase = createAdminClient();
-  const { data } = await supabase.from('app_settings').select('*');
-  const map: Record<string, string> = {};
-  (data ?? []).forEach((s: any) => (map[s.key] = s.value));
-  return map;
+  try {
+    const supabase = createAdminClient();
+    const { data, error } = await supabase.from('app_settings').select('*');
+    if (error) throw error;
+    const map: Record<string, string> = {};
+    (data ?? []).forEach((s: any) => (map[s.key] = s.value));
+    return map;
+  } catch (e) {
+    console.error('Settings fetch error:', e);
+    return {};
+  }
 }
 
 export default async function SettingsPage() {

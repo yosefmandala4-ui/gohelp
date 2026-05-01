@@ -7,19 +7,31 @@ import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 
 async function getNotifications() {
-  const supabase = createAdminClient();
-  const { data } = await supabase
-    .from('notifications')
-    .select('id, title, body, is_sent, created_at, user_id')
-    .order('created_at', { ascending: false })
-    .limit(20);
-  return data ?? [];
+  try {
+    const supabase = createAdminClient();
+    const { data, error } = await supabase
+      .from('notifications')
+      .select('id, title, body, is_sent, created_at, user_id')
+      .order('created_at', { ascending: false })
+      .limit(20);
+    if (error) throw error;
+    return data ?? [];
+  } catch (e) {
+    console.error('Notifications fetch error:', e);
+    return [];
+  }
 }
 
 async function getUsers() {
-  const supabase = createAdminClient();
-  const { data } = await supabase.from('profiles').select('id, full_name').order('full_name');
-  return data ?? [];
+  try {
+    const supabase = createAdminClient();
+    const { data, error } = await supabase.from('profiles').select('id, full_name').order('full_name');
+    if (error) throw error;
+    return data ?? [];
+  } catch (e) {
+    console.error('Users fetch for notifications error:', e);
+    return [];
+  }
 }
 
 export default async function NotificationsPage() {
