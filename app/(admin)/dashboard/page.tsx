@@ -4,6 +4,8 @@ import { Users, MessageSquare, Coins, TrendingUp, LayoutDashboard } from 'lucide
 import Link from 'next/link';
 import DashboardChart from './DashboardChart';
 
+export const dynamic = 'force-dynamic';
+
 async function getStats() {
   const supabase = createAdminClient();
 

@@ -1,6 +1,8 @@
 import { checkAdminAuth } from '@/lib/auth';
 import { createAdminClient } from '@/lib/supabase/server';
 import UserActions from './UserActions';
+
+export const dynamic = 'force-dynamic';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 

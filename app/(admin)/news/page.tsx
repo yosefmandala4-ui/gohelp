@@ -3,6 +3,8 @@ import { Newspaper, Plus, Search, Edit2, Trash2, Calendar } from 'lucide-react';
 import Link from 'next/link';
 import { format } from 'date-fns';
 
+export const dynamic = 'force-dynamic';
+
 export default async function NewsPage() {
   const supabase = createAdminClient();
   const { data: news, error } = await supabase

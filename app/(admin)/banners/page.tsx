@@ -1,6 +1,8 @@
 import { checkAdminAuth } from '@/lib/auth';
 import { createAdminClient } from '@/lib/supabase/server';
 import BannerForm from './BannerForm';
+
+export const dynamic = 'force-dynamic';
 import { Newspaper, Image as ImageIcon, Trash2, ExternalLink } from 'lucide-react';
 
 async function getBanners() {

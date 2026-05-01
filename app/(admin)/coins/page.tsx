@@ -1,6 +1,8 @@
 import { checkAdminAuth } from '@/lib/auth';
 import { createAdminClient } from '@/lib/supabase/server';
 import CoinForm from './CoinForm';
+
+export const dynamic = 'force-dynamic';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 

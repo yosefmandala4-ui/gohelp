@@ -2,6 +2,8 @@ import { checkAdminAuth } from '@/lib/auth';
 import { createAdminClient } from '@/lib/supabase/server';
 import SettingsForm from './SettingsForm';
 
+export const dynamic = 'force-dynamic';
+
 async function getSettings() {
   const supabase = createAdminClient();
   const { data } = await supabase.from('app_settings').select('*');
