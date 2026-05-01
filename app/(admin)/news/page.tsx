@@ -2,10 +2,12 @@ import { createAdminClient } from '@/lib/supabase/server';
 import { Newspaper, Plus, Search, Edit2, Trash2, Calendar } from 'lucide-react';
 import Link from 'next/link';
 import { format } from 'date-fns';
+import { checkAdminAuth } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
 export default async function NewsPage() {
+  await checkAdminAuth();
   const supabase = createAdminClient();
   let news = [];
   try {
@@ -96,7 +98,7 @@ export default async function NewsPage() {
                   <td className="py-4 text-gray-400">
                     <div className="flex items-center gap-1.5">
                       <Calendar size={14} />
-                      {format(new Date(item.created_at), 'dd MMM yyyy')}
+                      {item.created_at ? format(new Date(item.created_at), 'dd MMM yyyy') : '-'}
                     </div>
                   </td>
                   <td className="py-4">

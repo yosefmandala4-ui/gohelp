@@ -8,9 +8,5 @@ directory = ".open-next/assets"
 binding = "ASSETS"
 
 [vars]
-NEXT_PUBLIC_SUPABASE_URL = ""
-NEXT_PUBLIC_SUPABASE_ANON_KEY = ""
-SUPABASE_SERVICE_ROLE_KEY = ""
-ONESIGNAL_APP_ID = ""
-ONESIGNAL_REST_API_KEY = ""
-ADMIN_SECRET = ""
+# Variabel environment harus disetel langsung di Dashboard Cloudflare Pages 
+# agar tidak terekspos di repository publik.
