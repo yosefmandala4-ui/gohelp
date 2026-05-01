@@ -7,21 +7,28 @@ import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 
 async function getData() {
+  const supabase = createAdminClient();
+  let users = [];
+  let history = [];
+
   try {
-    const supabase = createAdminClient();
-    const [usersRes, historyRes] = await Promise.all([
-      supabase.from('profiles').select('id, full_name, email, coins').order('full_name'),
-      supabase.from('coin_transactions')
-        .select('id, amount, type, description, created_at, profiles(full_name)')
-        .order('created_at', { ascending: false })
-        .limit(30)
-        .catch(() => ({ data: [] })),
-    ]);
-    return { users: usersRes.data ?? [], history: (historyRes as any).data ?? [] };
+    const { data, error } = await supabase.from('profiles').select('id, full_name, email, coins').order('full_name');
+    if (!error) users = data || [];
   } catch (e) {
-    console.error('Coins fetch error:', e);
-    return { users: [], history: [] };
+    console.error('Profiles fetch error:', e);
   }
+
+  try {
+    const { data, error } = await supabase.from('coin_transactions')
+      .select('id, amount, type, description, created_at, profiles(full_name)')
+      .order('created_at', { ascending: false })
+      .limit(30);
+    if (!error) history = data || [];
+  } catch (e) {
+    console.error('History fetch error:', e);
+  }
+
+  return { users, history };
 }
 
 export default async function CoinsPage() {
