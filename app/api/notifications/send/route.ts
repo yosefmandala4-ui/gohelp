@@ -37,6 +37,10 @@ export async function POST(req: NextRequest) {
         app_id: oneSignalAppId,
         headings: { en: title, id: title },
         contents: { en: body, id: body },
+        android_sound: "loud_notification",
+        ios_sound: "loud_notification.mp3",
+        android_channel_id: "loud_notifications", // Optional: for channel-based sound
+        data: { is_alarm: isAlarm || false }
       };
 
       if (userId) {

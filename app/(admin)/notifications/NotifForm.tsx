@@ -7,6 +7,7 @@ export default function NotifForm({ users }: { users: any[] }) {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [userId, setUserId] = useState(''); // empty = broadcast
+  const [isAlarm, setIsAlarm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
@@ -18,7 +19,7 @@ export default function NotifForm({ users }: { users: any[] }) {
     const res = await fetch('/api/notifications/send', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, body, userId: userId || null }),
+      body: JSON.stringify({ title, body, userId: userId || null, isAlarm }),
     });
     if (res.ok) {
       setSuccess('Notifikasi berhasil dikirim!');
@@ -48,7 +49,20 @@ export default function NotifForm({ users }: { users: any[] }) {
       </div>
       <div className="space-y-2">
         <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider">Pesan *</label>
-        <textarea value={body} onChange={e => setBody(e.target.value)} className="input min-h-[120px] resize-none" placeholder="Isi pesan notifikasi..." required />
+        <textarea value={body} onChange={e => setBody(e.target.value)} className="input min-h-[100px] resize-none" placeholder="Isi pesan notifikasi..." required />
+      </div>
+
+      <div className="flex items-center gap-3 bg-white/5 p-4 rounded-2xl border border-white/10">
+        <input 
+          type="checkbox" 
+          id="isAlarm" 
+          checked={isAlarm} 
+          onChange={e => setIsAlarm(e.target.checked)}
+          className="w-5 h-5 accent-gold-500 rounded border-white/10"
+        />
+        <label htmlFor="isAlarm" className="text-sm font-medium text-white cursor-pointer select-none">
+          🚨 Aktifkan Mode Alarm (Bunyi Terus-Menerus)
+        </label>
       </div>
       {success && <div className="bg-gold-500/10 border border-gold-500/20 text-gold-500 px-4 py-2.5 rounded-xl text-sm">{success}</div>}
       {error && <div className="bg-red-500/10 border border-red-500/20 text-red-500 px-4 py-2.5 rounded-xl text-sm">{error}</div>}
