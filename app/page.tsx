@@ -37,20 +37,31 @@ export default function LandingPage() {
   }, []);
 
   const fetchBanners = async () => {
-    const { data, error } = await supabase
-      .from('banners')
-      .select('*')
-      .eq('is_active', true)
-      .order('display_order');
-    
-    if (data && data.length > 0) {
-      setBanners(data);
-    } else {
-      setBanners([
-        { image_url: 'https://images.unsplash.com/photo-1621905238291-0881816350d6?w=1200&q=80', title: 'Solusi Jasa Terpercaya di Indonesia' },
-        { image_url: 'https://images.unsplash.com/photo-1581578731548-c64695ce6958?w=1200&q=80', title: 'Layanan Cepat, Aman, & Transparan' }
-      ]);
+    try {
+      const { data, error } = await supabase
+        .from('banners')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order');
+      
+      if (error) throw error;
+
+      if (data && data.length > 0) {
+        setBanners(data);
+      } else {
+        setFallbackBanners();
+      }
+    } catch (err) {
+      console.error('Error fetching banners:', err);
+      setFallbackBanners();
     }
+  };
+
+  const setFallbackBanners = () => {
+    setBanners([
+      { image_url: 'https://images.unsplash.com/photo-1621905238291-0881816350d6?w=1200&q=80', title: 'Solusi Jasa Terpercaya di Indonesia' },
+      { image_url: 'https://images.unsplash.com/photo-1581578731548-c64695ce6958?w=1200&q=80', title: 'Layanan Cepat, Aman, & Transparan' }
+    ]);
   };
 
   useEffect(() => {
